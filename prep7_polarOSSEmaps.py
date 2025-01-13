@@ -119,6 +119,10 @@ if __name__ == "__main__":
     )
     total_repartition = add_cyclic_point(total_repartition, dim="lon", period=360)
 
+    rttov_channels = [14, 16, 23, 43]
+    clear_repartition = clear_repartition.sel({rttov_dim:rttov_channels})
+    total_repartition = total_repartition.sel({rttov_dim:rttov_channels})
+
     clear_repartition.to_netcdf("./data_dir/PREFIRE_Polar_clearsky.nc")
     total_repartition.to_netcdf("./data_dir/PREFIRE_Polar_totalsky.nc")
     del clear_repartition, total_repartition
