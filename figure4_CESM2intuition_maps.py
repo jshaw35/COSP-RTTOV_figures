@@ -176,6 +176,10 @@ if __name__ == "__main__":
     labels = ['e', 'f']
     for ax, label in zip(axs.flat[-2:], labels):
         ax.text(0.02, 1.2, f'{label}.', transform=ax.transAxes, fontsize=14, verticalalignment='top', weight='bold')
+    
+    # Add coastlines to all axes
+    for ax in axs.flat:
+        ax.coastlines()
 
     to_png(fig, "CESM2_maps_figure_alt", dpi=200, bbox_inches="tight", ext="png")
 

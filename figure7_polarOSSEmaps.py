@@ -224,11 +224,27 @@ def rttov_polarplus_panel_plot(
         )
         ax2.set_xticks(annual_tsubset_time[::5].values)
         ax2.set_xticklabels(annual_tsubset_time[::5].year)
-        ax2.set_ylim(
-            timeseries_data.sel({rttov_dim:_channel}).min() * 0.98,
-            timeseries_data.sel({rttov_dim:_channel}).max() * 1.02,
-        )
-        
+
+        # if ~np.isnan(timeseries_data).all():
+        #     ax2.set_ylim(
+        #         timeseries_data.sel({rttov_dim:_channel}).min() * 0.98,
+        #         timeseries_data.sel({rttov_dim:_channel}).max() * 1.02,
+        #     )
+
+        if np.isnan(timeseries_data).all():
+            spread = timeseries_ann_data.sel({rttov_dim:_channel}).max() - timeseries_ann_data.sel({rttov_dim:_channel}).min()
+            # mid = 0.5 * (timeseries_ann_data.sel({rttov_dim:_channel}).max() + timeseries_ann_data.sel({rttov_dim:_channel}).min())
+            pass
+            ax2.set_ylim(
+                timeseries_ann_data.sel({rttov_dim:_channel}).min() - spread * 0.15,
+                timeseries_ann_data.sel({rttov_dim:_channel}).max() + spread * 0.15,
+            )
+        else:
+            ax2.set_ylim(
+                timeseries_data.sel({rttov_dim:_channel}).min() * 0.98,
+                timeseries_data.sel({rttov_dim:_channel}).max() * 1.02,
+            )
+
         ax2.set_xlabel("Year", fontsize=15)
     axs2[0].set_ylabel("Radiance", fontsize=15)
 
@@ -290,7 +306,6 @@ def fix_fig_facecolor(
 # %%
 
 if __name__ == "__main__":
-    # %%
 
     rttov_channels = [14, 16, 23, 43]
 
@@ -341,6 +356,32 @@ if __name__ == "__main__":
     )
     fig = fix_fig_facecolor(fig)
     to_png(fig, "PREFIRE_polar_2000_2014_allsky_summary", dpi=200, ext="pdf", bbox_inches="tight")
+
+    # %%
+    # Only plot annual values for reviewer response.
+    rttov_channels = [14, 16, 23, 43]
+    rttov_dim = "RTTOV_CHAN_I001"
+
+    # Summary plots
+    fig = rttov_polarplus_panel_plot(
+        data=clear_arctic_map_avg,
+        timeseries_data=clear_arctic_avg.where(total_arctic_avg<0, np.nan),
+        timeseries_ann_data=clear_annual_timeseries,
+        rttov_channels=rttov_channels,
+        save_fig=False,
+    )
+    fig = fix_fig_facecolor(fig)
+    to_png(fig, "PREFIRE_polar_2000_2021_clrsky_annualsummary", dpi=200, ext="pdf", bbox_inches="tight")
+
+    fig = rttov_polarplus_panel_plot(
+        data=total_arctic_map_avg,
+        timeseries_data=total_arctic_avg.where(total_arctic_avg<0, np.nan),
+        timeseries_ann_data=total_annual_timeseries,
+        rttov_channels=rttov_channels,
+        save_fig=False,
+    )
+    fig = fix_fig_facecolor(fig)
+    to_png(fig, "PREFIRE_polar_2000_2021_allsky_annualsummary", dpi=200, ext="pdf", bbox_inches="tight")
 
 # %%
     # Produce plots for gif.

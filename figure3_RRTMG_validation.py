@@ -124,7 +124,7 @@ for i, _color in zip(scam_testcases, colors):
     # Plot the mean absolute and scaled errors for all-sky
     error_scatterplot(
         axs[0],
-        joint_flux_error_mean["flux_allsky"],
+        joint_flux_error_mean["flux_allsky"].where(joint_flux_error_mean_scaled["RRTMG_chan"] != 14),
         i[5:],
         color=_color,
         marker="*",
@@ -138,7 +138,7 @@ for i, _color in zip(scam_testcases, colors):
 
     error_scatterplot(
         axs[1],
-        joint_flux_error_mean_scaled["flux_allsky"],
+        joint_flux_error_mean_scaled["flux_allsky"].where(joint_flux_error_mean_scaled["RRTMG_chan"] != 14),
         i,
         color=_color,
         marker="*",
@@ -188,7 +188,7 @@ for i, _color in zip(scam_testcases, colors):
     # Plot the mean absolute and scaled errors for all-sky
     error_scatterplot(
         axs[0],
-        joint_flux_error_mean["flux_clrsky"],
+        joint_flux_error_mean["flux_clrsky"].where(joint_flux_error_mean_scaled["RRTMG_chan"] != 14),
         i[5:],
         color=_color,
         marker="*",
@@ -202,7 +202,7 @@ for i, _color in zip(scam_testcases, colors):
 
     error_scatterplot(
         axs[1],
-        joint_flux_error_mean_scaled["flux_clrsky"],
+        joint_flux_error_mean_scaled["flux_clrsky"].where(joint_flux_error_mean_scaled["RRTMG_chan"] != 14),
         i,
         color=_color,
         marker="*",
