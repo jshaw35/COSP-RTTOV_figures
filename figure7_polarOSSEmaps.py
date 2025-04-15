@@ -225,12 +225,6 @@ def rttov_polarplus_panel_plot(
         ax2.set_xticks(annual_tsubset_time[::5].values)
         ax2.set_xticklabels(annual_tsubset_time[::5].year)
 
-        # if ~np.isnan(timeseries_data).all():
-        #     ax2.set_ylim(
-        #         timeseries_data.sel({rttov_dim:_channel}).min() * 0.98,
-        #         timeseries_data.sel({rttov_dim:_channel}).max() * 1.02,
-        #     )
-
         if np.isnan(timeseries_data).all():
             spread = timeseries_ann_data.sel({rttov_dim:_channel}).max() - timeseries_ann_data.sel({rttov_dim:_channel}).min()
             # mid = 0.5 * (timeseries_ann_data.sel({rttov_dim:_channel}).max() + timeseries_ann_data.sel({rttov_dim:_channel}).min())
